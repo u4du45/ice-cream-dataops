@@ -1,0 +1,4 @@
+externalId: timeseries-rest-destination
+credentials:
+  clientId: {{ icapi_extractors_client_id }}
+  clientSecret: {{ icapi_extractors_client_secret }}

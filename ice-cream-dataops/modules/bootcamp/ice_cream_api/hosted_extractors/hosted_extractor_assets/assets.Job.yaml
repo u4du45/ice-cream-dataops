@@ -1,0 +1,11 @@
+externalId: assets-rest-job
+sourceId: extractor-assets-source
+destinationId: assets-rest-destination
+format:
+  type: custom
+  encoding: utf8
+  mappingId: assets-rest-mapping
+config:
+  interval: 1d
+  path: /site/all/csv
+  method: get

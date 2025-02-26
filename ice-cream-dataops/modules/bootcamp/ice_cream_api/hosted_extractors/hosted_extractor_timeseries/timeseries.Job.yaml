@@ -1,0 +1,11 @@
+externalId: timeseries-rest-job
+sourceId: extractor-timeseries-source
+destinationId: timeseries-rest-destination
+format:
+  type: custom
+  encoding: utf8
+  mappingId: timeseries-rest-mapping
+config:
+  interval: 1h
+  path: /timeseries/oee
+  method: get

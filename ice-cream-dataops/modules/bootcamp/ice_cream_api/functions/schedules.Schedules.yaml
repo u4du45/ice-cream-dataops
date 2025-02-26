@@ -1,0 +1,10 @@
+- name: Frontfill every 10 minutes for the last hour of data (streamer)
+  functionExternalId: icapi_datapoints_extractor
+  cronExpression: "*/10 * * * *"
+  data:
+    hours: 1
+- name: Backfill Oslo once a day for the last 5 days (gap filling)
+  functionExternalId: icapi_datapoints_extractor
+  cronExpression: "21 0 * * *"
+  data:
+    backfill: True

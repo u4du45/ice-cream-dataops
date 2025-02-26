@@ -1,0 +1,3 @@
+externalId: 'contextualize_ts_assets'
+interval: '21 00 * * *'
+isPaused: false

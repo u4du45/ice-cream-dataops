@@ -1,0 +1,57 @@
+workflowExternalId: wf_icapi_data_pipeline
+version: '1'
+workflowDefinition:
+  description: 'Run tasks in sequence'
+  tasks:
+    - externalId: 'create_asset_hierarchy_task'
+      type: transformation
+      parameters:
+        transformation:
+          externalId: 'create_asset_hierarchy'
+        isAsyncComplete: false
+      name: Asset hierarchy creation
+      description: First task
+      retries: 3
+      timeout: 3600
+      onFailure: abortWorkflow
+    - externalId: 'contextualize_ts_assets_task'
+      type: transformation
+      parameters:
+        transformation:
+          externalId: 'contextualize_ts_assets'
+          concurrencyPolicy: fail
+      name: Contextualize TimeSeries
+      description: Second task 
+      retries: 3
+      timeout: 3600
+      onFailure: 'skipTask'
+      dependsOn:
+        - externalId: 'create_asset_hierarchy_task'
+    - externalId: 'ep_icapi_datapoints_task'
+      type: 'function'
+      parameters:
+        function:
+          externalId: 'ep_icapi_datapoints'
+          data: {hours: 1}
+          concurrencyPolicy: fail
+      name: IcaPI Data Points
+      description: Third task 
+      retries: 3
+      timeout: 3600
+      onFailure: 'skipTask'
+      dependsOn:
+        - externalId: 'contextualize_ts_assets_task'
+    - externalId: 'oee_timeseries_task'
+      type: 'function'
+      parameters:
+        function:
+          externalId: 'oee_timeseries'
+          data: {hours: 1}
+          concurrencyPolicy: fail
+      name: OEE TimeSeries
+      description: Fourth task 
+      retries: 3
+      timeout: 3600
+      onFailure: 'skipTask'
+      dependsOn:
+        - externalId: 'ep_icapi_datapoints_task'
